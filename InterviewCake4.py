@@ -1,33 +1,32 @@
 def condense_meeting_times(lst):
     lst = [list(block) for block in lst]
     sorted_list = binary_sort(lst)
-    return condense(sorted_list)
+    return condense_lst(sorted_list)
     
 
-def condense(lst):
+def condense_lst(lst):
     condensed = list(lst)
     i = 0
-    max = len(lst) - 1
+    maximum = len(lst) - 1
     
-    print(lst)
-    while(i < max):
-        curr = condensed[i]
+    while(i < maximum):
+        curr = condensed[i]    
         nxt = condensed[i+1]
-        print(curr, nxt)
-        print (type(curr), type(nxt))
-        print (type(curr[0]), type(curr[1]))
-        print (type(nxt[0]), type(nxt[1]))
-
-        if (hasOverlap(curr, nxt)):
+        
+        while (nxt and hasOverlap(curr, nxt)):
             curr[0] = min(curr[0], nxt[0])
             curr[1] = max(curr[1], nxt[1])
             del condensed[i+1]
-        
-        max -= 1
+            maximum -= 1
+            if (i < maximum):
+                nxt = condensed[i+1]
+            else:
+                nxt = None
+            
         i += 1
 
     return condensed
-
+            
 # Do a binary sort which is an n*log(n) 
 def binary_sort(lst):
     sorted_list = [list(lst[0])]
@@ -36,7 +35,7 @@ def binary_sort(lst):
         i = binary_search(sorted_list, block)
         curr = sorted_list[i] 
                 
-        if (curr[1] > block[1]):
+        if (curr[1] < block[1]):
             sorted_list.insert(i, block)
         else:
             sorted_list.insert(i + 1, block)
@@ -54,15 +53,13 @@ def bsrch(lst, block, min, max):
     curr = int((min + max) / 2) 
     
     if (hasOverlap(lst[curr], block) or 
-        min == max):
-        
+        min == max):        
         return curr
 
     if (lst[curr][1] > block[1]):
         return bsrch(lst, block, min, curr-1)
     else:
         return bsrch(lst, block, curr+1, max)
-
 
 def hasOverlap(block1, block2):
     
@@ -74,7 +71,10 @@ def hasOverlap(block1, block2):
     
     return False
 
-input = [(0, 1), (3, 8), (9, 12)]
-input_full = [(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)]
+# condensed = [(0, 1), (3, 8), (9, 12)]
+input1 = [(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)]
 
-print(condense_meeting_times(input_full))
+# condensed = [(1, 10)]
+input2 =  [(1, 10), (2, 6), (3, 5), (7, 9)]
+
+print(condense_meeting_times(input1))
