@@ -37,3 +37,7 @@ def find_unique_delivery_id_n(delivery_ids):
 
     for delivery_id in delivery_ids:
         unique_id ^= delivery_id
+
+# Some final notes, some things to watch out for when bit manipulation is the key
+# is when you want to divide or multiply something by 2 or we wanna cancel out 
+# matching numbers.
